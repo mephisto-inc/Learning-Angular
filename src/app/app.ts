@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {Home} from './home/home';
 
 @Component({
@@ -19,6 +19,4 @@ import {Home} from './home/home';
   ]
 })
 
-export class App {
-  title : string = "home";
-}
+export class App {}
