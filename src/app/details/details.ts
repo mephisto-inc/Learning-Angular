@@ -54,8 +54,10 @@ class Details {
   });
 
   constructor() {
-    const housingLocationId = Number(this.route.snapshot.paramMap.get('id'));
-    this.housingLocationInterface = this.housingService.getHousingLocationById(housingLocationId);
+    const housingLocationId = Number(this.route.snapshot.params['id']);
+    this.housingService.getHousingLocationById(housingLocationId).then((housingLocationInterface ) => {
+      this.housingLocationInterface = housingLocationInterface;
+    });
   }
 
   submitApplication() {

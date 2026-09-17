@@ -10,12 +10,12 @@ import {Housing} from '../housing';
   template: `
     <section>
       <form>
-        <input type="text" placeholder="Filter by city">
-        <button class="primary" type="button">Search</button>
+        <input type="text" placeholder="Filter by city" #filter>
+        <button class="primary" type="button" (click)="filterResults(filter.value)">Search</button>
       </form>
     </section>
     <section class="results">
-      @for (housingList of housingLocationList; track housingList) {
+      @for (housingList of filteredLocationList; track housingList) {
         <app-housing-location [housingLocationInterface]="housingList"></app-housing-location>
       }
     </section>
@@ -23,13 +23,20 @@ import {Housing} from '../housing';
 })
 export class Home {
   housingLocationList: HousingLocationInterface[] = [];
+  filteredLocationList: HousingLocationInterface[] = [];
   housingService: Housing = inject(Housing);
 
   constructor() {
-    this.housingLocationList = this.housingService.getAllHousingLocation();
+    this.housingService.getAllHousingLocation().then((housingLocationList) => {
+      this.housingLocationList = housingLocationList;
+      this.filteredLocationList = housingLocationList;
+    });
   }
 
-  getHousingLocationById(id: number): HousingLocationInterface | undefined {
-    return this.housingService.getHousingLocationById(id);
+  filterResults(filter: string) {
+    if (!filter) this.filteredLocationList = this.housingLocationList;
+    this.filteredLocationList = this.housingLocationList.filter(
+      housingLocation => housingLocation?.city?.toLowerCase().includes(filter.toLowerCase())
+    );
   }
 }
